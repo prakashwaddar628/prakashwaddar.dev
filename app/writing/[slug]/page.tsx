@@ -1,8 +1,11 @@
+export const runtime = "nodejs"
+
 import fs from "fs"
 import path from "path"
 import { MDXRemote } from "next-mdx-remote/rsc"
 
 const writingDirectory = path.join(process.cwd(), "content/writing")
+
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const title = params.slug
