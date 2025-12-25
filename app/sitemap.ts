@@ -1,3 +1,9 @@
+/*
+    this sitemap.ts file is used to generate the sitemap for the website.
+    It dynamically reads the content from the writing and logs directories
+    and constructs the sitemap entries accordingly.
+*/
+
 import fs from "fs"
 import path from "path"
 
