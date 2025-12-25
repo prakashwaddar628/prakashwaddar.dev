@@ -1,0 +1,160 @@
+# Longest Increasing Subsequence (LIS): Why Binary Search Works
+
+## Problem Statement
+
+Given an array of integers, find the length of the longest strictly increasing subsequence.
+
+A subsequence does not need to be contiguous, but the order must be preserved.
+
+---
+
+## Why This Problem Is Interesting
+
+At first glance, LIS looks like a classic dynamic programming problem.
+
+A straightforward DP solution exists with O(n²) time complexity, which is acceptable for small inputs but fails at scale.
+
+The interesting part is that LIS can be solved in O(n log n) time — but the reasoning behind it is often misunderstood or memorized without understanding.
+
+This article focuses on *why* the binary search approach works, not just how to implement it.
+
+---
+
+## Baseline Approach: O(n²) Dynamic Programming
+
+The most intuitive solution defines:
+
+dp[i] = length of the LIS ending at index i
+
+For each i, we look at all j < i and update dp[i] if nums[j] < nums[i].
+
+This works, but it scales poorly for large inputs.
+
+Time Complexity: O(n²)  
+Space Complexity: O(n)
+
+The limitation of this approach motivates a more optimal solution.
+
+---
+
+## Key Insight: We Only Care About the Best Possible Tails
+
+Instead of tracking entire subsequences, we track something more subtle:
+
+For each possible subsequence length L, we only care about the **smallest possible ending value** of an increasing subsequence of length L.
+
+Why?
+
+Because a smaller ending value gives us more flexibility to extend the subsequence later.
+
+This observation is the foundation of the O(n log n) solution.
+
+---
+
+## The Invariant We Maintain
+
+We maintain an array called `tails` where:
+
+- `tails[k]` = the smallest possible tail value of an increasing subsequence of length `k + 1`
+- The `tails` array is always sorted
+
+Important clarification:
+- `tails` does **not** represent a real subsequence
+- It represents the *best possible endings* for subsequences of different lengths
+
+This invariant is what enables binary search.
+
+---
+
+## Why Binary Search Is Valid Here
+
+Because `tails` is sorted, for each new number `x`:
+
+- If `x` is larger than all elements in `tails`, it extends the longest subsequence
+- Otherwise, we find the **first element in `tails` that is ≥ x** and replace it with `x`
+
+This replacement does not reduce the length of any valid LIS.
+Instead, it improves the tail value, making future extensions more likely.
+
+Binary search ensures this operation happens in O(log n) time.
+
+---
+
+## Step-by-Step Example
+
+Consider the input: [10, 9, 2, 5, 3, 7]
+
+Step | Number | Tails
+---------------------
+1    | 10     | [10]
+2    | 9      | [9]
+3    | 2      | [2]
+4    | 5      | [2, 5]
+5    | 3      | [2, 3]
+6    | 7      | [2, 3, 7]
+
+
+(This section will include a detailed walkthrough.)
+
+---
+
+## Why This Greedy Strategy Is Correct
+
+The algorithm is greedy, but it is **greedy with a proven invariant**.
+
+Key reasoning:
+- We never discard the possibility of a longer increasing subsequence
+- We only replace tails with better (smaller) candidates
+- The length of `tails` at the end equals the LIS length
+
+This guarantees correctness.
+
+---
+
+## Final Algorithm (Python)
+
+```python
+def lengthOfLIS(nums):
+    import bisect
+    tails = []
+
+    for num in nums:
+        idx = bisect.bisect_left(tails, num)
+        if idx == len(tails):
+            tails.append(num)
+        else:
+            tails[idx] = num
+
+    return len(tails)
+
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+
+Common Misconceptions
+
+tails is not the actual LIS
+
+Replacements do not destroy valid solutions
+
+Binary search works because of a maintained invariant, not luck
+
+What This Problem Taught Me
+
+This problem is a great example of how:
+
+Reframing the state leads to better performance
+
+Greedy strategies work when paired with the right invariant
+
+Understanding why matters more than memorizing patterns
+
+Closing Thoughts
+
+LIS is less about dynamic programming and more about state optimization.
+
+Once you see the invariant, the solution becomes obvious.
+Until then, it feels like magic.
+
+Understanding this distinction is what separates memorization from mastery.
+
+---
