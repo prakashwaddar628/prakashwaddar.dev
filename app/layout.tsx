@@ -20,7 +20,7 @@ export const metadata = {
     title: "Prakash L Waddar | AI & Software Engineer",
     description:
       "Public engineering work, deep technical writing, and real-world system design.",
-    // url: "https://your-domain.dev",
+    url: "https://prakash-l-waddar.vercel.app/",
     siteName: "Prakash L Waddar",
     locale: "en_US",
     type: "website",

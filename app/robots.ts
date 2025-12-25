@@ -9,6 +9,6 @@ export default function robots() {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://localhost:3000/sitemap.xml", // Replace with your actual sitemap URL
+    sitemap: "https://prakash-l-waddar.vercel.app/sitemap.xml",
   }
 }

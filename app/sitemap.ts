@@ -8,7 +8,7 @@ import fs from "fs"
 import path from "path"
 
 export default function sitemap() {
-  const baseUrl = "https://localhost:3000" // Replace with your actual base URL
+  const baseUrl = "https://prakash-l-waddar.vercel.app/" // Replace with your actual base URL
 
   const writingDir = path.join(process.cwd(), "content/writing")
   const logsDir = path.join(process.cwd(), "content/logs")
