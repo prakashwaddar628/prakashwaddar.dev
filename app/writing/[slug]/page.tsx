@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import fs from "fs";
 import path from "path";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Navbar from "@/components/navbar/Navbar";
 
 const writingDirectory = path.join(process.cwd(), "content/writing");
 
@@ -33,8 +34,11 @@ export default async function WritingArticlePage({
   const source = fs.readFileSync(filePath, "utf8");
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12 prose">
-      <MDXRemote source={source} />
-    </main>
+    <div>
+      <Navbar />
+      <main className="max-w-3xl mx-auto px-6 py-12 prose">
+        <MDXRemote source={source} />
+      </main>
+    </div>
   );
 }
