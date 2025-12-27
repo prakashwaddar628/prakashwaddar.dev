@@ -33,7 +33,12 @@ Our fallback architecture must satisfy three specific goals:
 
 The standard approach is a **Circuit Breaker** pattern layered over a **Cache-Aside** strategy.
 
-[Image of circuit breaker software design pattern]
+A typical request flow during a Redis outage looks like this:
+
+Request → API → Circuit Breaker (OPEN)  
+→ Skip Redis → Database  
+→ Return response  
+→ (Optional) Async cache warm-up when Redis recovers
 
 1.  **Application** requests data.
 2.  **Circuit Breaker** checks the health of the Redis connection.
@@ -107,6 +112,8 @@ def get_user_data(user_id):
     db_data = db.query(f"SELECT * FROM users WHERE id = {user_id}")
     
     # Asynchronous Write-Back (Optional)
+    # Only write back to Redis when the breaker is closed
+    # to avoid overwhelming a recovering cache
     if breaker.state == "CLOSED":
         redis_client.set(f"user:{user_id}", db_data)
         
