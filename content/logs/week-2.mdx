@@ -1,0 +1,67 @@
+# Engineering Log — Week 2
+
+## What I Shipped This Week
+
+This week was focused on making my work publicly accessible and production-ready.
+
+I published two deep technical articles:
+- A reasoning-focused explanation of the Longest Increasing Subsequence problem, centered on invariants rather than implementation details.
+- A system design write-up on Redis fallback architecture, covering failure scenarios, circuit breakers, and trade-offs in production systems.
+
+I also deployed my personal site on Vercel and made my writing and logs publicly navigable.
+
+---
+
+## What Broke
+
+A dynamic MDX route (`/writing/[slug]`) worked locally but failed after deployment to Vercel.
+
+The issue was not immediately obvious because:
+- Static routes rendered correctly
+- Only dynamic slug pages failed
+- The error appeared as a generic server-side exception
+
+---
+
+## Root Cause Analysis
+
+The failure was caused by a mismatch between the runtime environment and the code being executed.
+
+Specifically:
+- Dynamic routes defaulted to the Edge runtime on Vercel
+- The page used Node.js APIs (`fs`) to load MDX content
+- Edge runtime does not support Node filesystem APIs
+
+Additionally, static optimization and metadata evaluation occurred before the page render, which further masked the issue.
+
+---
+
+## How I Fixed It
+
+I fixed the issue by:
+- Explicitly forcing the Node.js runtime for the dynamic route
+- Disabling static optimization by marking the route as dynamic
+- Adding defensive file existence checks to avoid silent crashes
+
+This ensured consistent behavior between local development and production.
+
+---
+
+## What I Learned
+
+- Next.js App Router has different execution environments that must be handled explicitly
+- Edge runtime is powerful but unsuitable for filesystem-based content loading
+- Production bugs often arise from environment assumptions rather than logic errors
+- Writing public logs clarifies thinking and forces proper root-cause analysis
+
+---
+
+## What I’m Building Next
+
+Next, I plan to continue strengthening my system design and applied ML profile.
+
+Potential areas of focus:
+- API rate limiting and backpressure handling
+- Evaluating ML models based on business cost rather than accuracy alone
+
+The goal is to keep building proof-driven artifacts that demonstrate real-world engineering judgment.
