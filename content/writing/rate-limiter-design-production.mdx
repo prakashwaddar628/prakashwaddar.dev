@@ -2,9 +2,9 @@
 
 ### Why Rate Limiting Matters
 
-Rate limiting is the defensive line of any distributed system. Without it, a single buggy script or a malicious DDoS attack can starve legitimate users of resources, degrade database performance, and drive up cloud costs.
+Rate limiting is the defensive line of any distributed system. Without it, a single buggy script or a malicious DDoS attack can starve legitimate users of resources, degrade database performance, and drive up cloud costs[cite: 27, 28].
 
-Beyond protection, rate limiting is a business requirement. It enforces tiered pricing models (e.g., "Basic users get 100 req/hour, Pro gets 1000") and manages quotas across microservices to prevent cascading failures.
+Beyond protection, rate limiting is a business requirement. It enforces tiered pricing models (e.g., "Basic users get 100 req/hour, Pro gets 1000") and manages quotas across microservices to prevent cascading failures[cite: 29].
 
 ---
 
@@ -12,21 +12,21 @@ Beyond protection, rate limiting is a business requirement. It enforces tiered p
 
 There isn't one "correct" algorithm. Each comes with distinct behaviors.
 
-**1. Fixed Window** The timeline is divided into fixed intervals (e.g., 1 minute). A counter increments for each request.
+**1. Fixed Window** The timeline is divided into fixed intervals (e.g., 1 minute). A counter increments for each request[cite: 31].
 * **Pros:** Simple, memory efficient.
-* **Cons:** Vulnerable to spikes at window boundaries (e.g., 100 requests at 10:00:59 and 100 at 10:01:01 allows double the rate).
+* **Cons:** Vulnerable to spikes at window boundaries (e.g., 100 requests at 10:00:59 and 100 at 10:01:01 allows double the rate)[cite: 32].
 
-**2. Sliding Window Log** Tracks the timestamp of every request. When a new request comes in, we remove timestamps older than the window.
+**2. Sliding Window Log** Tracks the timestamp of every request. When a new request comes in, we remove timestamps older than the window[cite: 33, 34].
 * **Pros:** Highly accurate.
-* **Cons:** Expensive. Storing timestamps for millions of requests consumes massive memory.
+* **Cons:** Expensive. Storing timestamps for millions of requests consumes massive memory[cite: 35].
 
-**3. Token Bucket** A bucket is filled with tokens at a constant rate. Each request consumes a token. If empty, the request is dropped.
+**3. Token Bucket** A bucket is filled with tokens at a constant rate. Each request consumes a token. If empty, the request is dropped[cite: 36, 37].
 * **Pros:** Allows for "bursts" of traffic while maintaining a steady average.
-* **Cons:** Slightly more complex to implement correctly in distributed environments.
+* **Cons:** Slightly more complex to implement correctly in distributed environments[cite: 38].
 
-**4. Leaky Bucket** Requests enter a queue (bucket) and are processed at a constant rate. If the queue is full, new requests are discarded.
+**4. Leaky Bucket** Requests enter a queue (bucket) and are processed at a constant rate. If the queue is full, new requests are discarded[cite: 39, 40].
 * **Pros:** Smoothes out bursty traffic into a stable outflow.
-* **Cons:** Can introduce latency if the queue is long.
+* **Cons:** Can introduce latency if the queue is long[cite: 41].
 
 ---
 
@@ -39,26 +39,25 @@ There isn't one "correct" algorithm. Each comes with distinct behaviors.
 | Memory Cost   |   🟢 Low     |   🟢 Low    |     🟢 Low    |      🔴 High       |
 | Complexity    |   🟡 Medium  |  🟡 Medium  |    🟢 Low     |     🟡 Medium      |
 ```
-For most general-purpose APIs, **Token Bucket** is the industry standard because it balances fairness with the reality that traffic is naturally bursty.
+
+For most general-purpose APIs, **Token Bucket** is the industry standard because it balances fairness with the reality that traffic is naturally bursty[cite: 54].
 
 ---
 
 ### Single-Instance Rate Limiting
 
-*On a single server, rate limiting is trivial. You can use an in-memory hash map or a `Guava` RateLimiter in Java. Since all state is local, there is no network latency and consistency is guaranteed.
+On a single server, rate limiting is trivial. You can use an in-memory hash map or a `Guava` RateLimiter in Java[cite: 55, 56]. Since all state is local, there is no network latency and consistency is guaranteed[cite: 57].
 
-*However, modern systems are rarely single-instance. As soon as you add a load balancer and a second server, local rate limiting fails because Server A doesn't know about the traffic on Server B.
+However, modern systems are rarely single-instance. As soon as you add a load balancer and a second server, local rate limiting fails because Server A doesn't know about the traffic on Server B[cite: 58].
 
 ---
 
 ### Distributed Rate Limiting
 
-In a distributed system, we need a shared "source of truth" for our counters. Redis is the standard choice here due to its speed and support for atomic operations.
-
-**The Naive Approach (Race Conditions)** Read the counter -> Increment it -> Write it back.  
-This fails under concurrency. Two requests reading "9" simultaneously will both write "10", effectively allowing one extra request.
-
-**The Solution: Lua Scripts** Redis allows us to run Lua scripts atomically. This ensures that the "check and increment" logic happens as a single, indivisible step.
+In a distributed system, we need a shared "source of truth" for our counters. Redis is the standard choice here due to its speed and support for atomic operations[cite: 58, 59].
+**The Naive Approach (Race Conditions)** Read the counter -> Increment it -> Write it back.
+This fails under concurrency. Two requests reading "9" simultaneously will both write "10", effectively allowing one extra request[cite: 60, 61].
+**The Solution: Lua Scripts** Redis allows us to run Lua scripts atomically. This ensures that the "check and increment" logic happens as a single, indivisible step[cite: 62, 63].
 
 ```lua
 -- Simple Fixed Window Lua Script
@@ -75,9 +74,8 @@ else
 end
 ```
 ---
-Failure Modes
+**Failure Modes**
 Even with Redis, things go wrong.
-
 * **Redis Down:** If the rate limiter fails, do you block all traffic (fail closed) or let everything through (fail open)? In most cases, fail open is safer for business continuity, though risky for backend load.
 * **Clock Skew:** If you use Sliding Windows based on server timestamps, clock drift between machines can cause inconsistencies.
 * **Hot Keys:** A global rate limit (e.g., "10,000 req/s for the whole app") effectively turns one Redis key into a hotspot, potentially sharding it onto a single node and bottlenecking the cluster.
@@ -96,3 +94,5 @@ If I were building this today:
 ---
 **Closing Thoughts**
 * Rate limiting is a classic "easy to understand, hard to master" problem. The algorithm is the easy part. The challenge lies in the operational reality—handling race conditions, latency, and failure scenarios without accidentally taking down your own service.
+
+---
