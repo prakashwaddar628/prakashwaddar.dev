@@ -1,0 +1,51 @@
+# Engineering Log — Week 3
+
+## What I Shipped This Week
+
+This week focused on system design depth and consistency.
+
+I completed and published a system design article on **rate limiting**, covering:
+- Common rate limiting strategies
+- Trade-offs between different approaches
+- Distributed rate limiting using Redis
+- Failure modes and graceful degradation strategies
+
+This article helped me consolidate my understanding of how theoretical concepts translate into real production constraints.
+
+---
+
+## How My System Thinking Evolved
+
+While writing the rate limiter article, I realized that system design problems are less about choosing the “best” algorithm and more about choosing acceptable trade-offs.
+
+Decisions around consistency, latency, and failure handling became clearer once I framed the problem from an operational perspective rather than a purely academic one.
+
+---
+
+## One Design Decision I Changed My Mind About
+
+Initially, I assumed Redis-based rate limiting was always the correct solution for distributed systems.
+
+While writing, I realized that:
+- Redis introduces its own failure modes
+- In some cases, approximate or in-memory limits with graceful degradation can be safer
+- Simpler solutions are sometimes more resilient than perfectly accurate ones
+
+---
+
+## What I’d Do Differently Next Time
+
+I would start system design write-ups with explicit non-goals earlier in the process.
+
+This would help constrain design choices and avoid unnecessary complexity during implementation.
+
+---
+
+## What I’m Building Next
+
+Next, I’m shifting focus toward **ML in production**, specifically:
+- How model evaluation metrics fail in real-world scenarios
+- How business cost should influence metric selection
+- How to reason about false positives and false negatives after deployment
+
+The goal is to bridge the gap between model performance and production impact.
