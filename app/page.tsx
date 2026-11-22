@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { FaCode, FaDatabase, FaCloud, FaLayerGroup, FaMicrochip } from "react-icons/fa6";
 import ProjectShowcase from "@/components/ProjectShowcase";
+import HeroSignal from "@/components/HeroSignal";
+import Playground from "@/components/Playground";
 
 const stack = [
   { title: "Frontend", icon: FaLayerGroup, tools: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Flutter"] },
@@ -15,34 +17,17 @@ export default function Home() {
     <main id="main-content">
       <section className="hero" aria-labelledby="hero-title">
         <div className="frame hero-inner">
-          <div className="hero-art" aria-hidden="true">
-            <svg viewBox="0 0 560 560" fill="none">
-              <defs>
-                <linearGradient id="orbit-line" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
-                  <stop stopColor="#edffb0"/><stop offset="1" stopColor="#537831" stopOpacity=".25"/>
-                </linearGradient>
-              </defs>
-              <g stroke="url(#orbit-line)">
-                {Array.from({ length: 20 }, (_, index) => (
-                  <ellipse key={index} cx="280" cy="280" rx="216" ry={47 + index * 5.5} transform={`rotate(${index * 9} 280 280)`} />
-                ))}
-                <circle cx="280" cy="280" r="248" strokeDasharray="2 8" opacity=".5"/>
-                <circle cx="280" cy="280" r="228" opacity=".2"/>
-              </g>
-              <circle cx="280" cy="280" r="8" fill="#d8ff70"/>
-              <path d="M280 17v24m0 478v24M17 280h24m478 0h24" stroke="#d8ff70" opacity=".6"/>
-            </svg>
-          </div>
           <div className="hero-content">
             <p className="eyebrow hero-name">Prakash L Waddar</p>
-            <h1 id="hero-title"><span>I build what’s</span><span>next<span className="hero-period">.</span></span></h1>
+            <h1 id="hero-title"><span><span>I build what’s</span></span><span><span>next<span className="hero-period">.</span></span></span></h1>
             <p className="hero-role">Software Engineer / Full-Stack Developer / AI Engineer</p>
             <p className="hero-summary">I build scalable applications and AI-powered tools that turn complex ideas into products people can use.</p>
             <div className="hero-actions">
-              <a className="button button-primary" href="#work" data-magnetic><span>Explore projects</span></a>
+              <a className="button button-primary" href="#work" data-magnetic><span>See what I’ve built</span></a>
               <a className="button" href="#contact" data-magnetic><span>Get in touch</span></a>
             </div>
           </div>
+          <HeroSignal />
           <a className="scroll-cue" href="#work"><span aria-hidden="true" />Scroll to projects</a>
         </div>
       </section>
@@ -98,6 +83,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <Playground />
 
       <section className="frame section split" aria-labelledby="journal-title">
         <div className="section-heading" data-reveal>

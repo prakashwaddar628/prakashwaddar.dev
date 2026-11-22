@@ -15,6 +15,7 @@ export default function PortfolioMotion() {
     let frame = 0;
     let x = 0, y = 0, targetX = 0, targetY = 0, vx = 0, vy = 0;
     let following = false;
+    let scrollChanged = true;
     let pointerTarget: Element | null = null;
     let pointerChanged = false;
     let active: HTMLElement | null = null;
@@ -26,8 +27,12 @@ export default function PortfolioMotion() {
 
     function draw() {
       frame = 0;
-      const distance = root.scrollHeight - window.innerHeight;
-      if (progress) progress.style.transform = `scaleX(${distance > 0 ? window.scrollY / distance : 0})`;
+      if (scrollChanged && progress) {
+        const distance = root.scrollHeight - window.innerHeight;
+        const ratio = distance > 0 ? Math.max(0, Math.min(1, window.scrollY / distance)) : 0;
+        progress.style.transform = `scaleX(${ratio})`;
+        scrollChanged = false;
+      }
       if (!following || !glow) return;
       if (pointerChanged) updateHover();
       vx = (vx + (targetX - x) * .12) * .72;
@@ -40,6 +45,11 @@ export default function PortfolioMotion() {
 
     function schedule() {
       if (!frame) frame = requestAnimationFrame(draw);
+    }
+
+    function scheduleProgress() {
+      scrollChanged = true;
+      schedule();
     }
 
     function clearPointer() {
@@ -104,11 +114,11 @@ export default function PortfolioMotion() {
     window.addEventListener("pointermove", move, { passive: true });
     root.addEventListener("pointerleave", clearPointer);
     window.addEventListener("blur", clearPointer);
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    window.addEventListener("scroll", scheduleProgress, { passive: true });
+    window.addEventListener("resize", scheduleProgress);
     motion.addEventListener("change", clearPointer);
     pointer.addEventListener("change", clearPointer);
-    const resize = new ResizeObserver(schedule);
+    const resize = new ResizeObserver(scheduleProgress);
     resize.observe(document.body);
     schedule();
 
@@ -120,8 +130,8 @@ export default function PortfolioMotion() {
       window.removeEventListener("pointermove", move);
       root.removeEventListener("pointerleave", clearPointer);
       window.removeEventListener("blur", clearPointer);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("scroll", scheduleProgress);
+      window.removeEventListener("resize", scheduleProgress);
       motion.removeEventListener("change", clearPointer);
       pointer.removeEventListener("change", clearPointer);
     };

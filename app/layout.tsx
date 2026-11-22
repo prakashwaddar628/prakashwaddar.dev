@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PortfolioMotion from "@/components/PortfolioMotion";
-import "./globals.css";
 
 const name = "Prakash L Waddar";
 const title = `${name} | Software & AI Engineer`;
