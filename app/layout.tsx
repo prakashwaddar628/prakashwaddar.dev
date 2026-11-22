@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PortfolioMotion from "@/components/PortfolioMotion";
+import PortfolioConsole from "@/components/PortfolioConsole";
 
 const name = "Prakash L Waddar";
 const title = `${name} | Software & AI Engineer`;
@@ -19,13 +20,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
-        <a className="skip-link" href="#main-content">Skip to content</a>
-        <Navbar />
-        {children}
-        <footer className="frame site-footer">
-          <Link href="/">{name}</Link>
-          <Link href="/#contact">Contact</Link>
-        </footer>
+        <PortfolioConsole>
+          <a className="skip-link" href="#main-content">Skip to content</a>
+          <Navbar />
+          {children}
+          <footer className="frame site-footer">
+            <Link href="/">{name}</Link>
+            <Link href="/#contact">Contact</Link>
+          </footer>
+        </PortfolioConsole>
         <PortfolioMotion />
       </body>
     </html>

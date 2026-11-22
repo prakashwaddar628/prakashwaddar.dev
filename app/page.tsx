@@ -3,6 +3,7 @@ import { FaCode, FaDatabase, FaCloud, FaLayerGroup, FaMicrochip } from "react-ic
 import ProjectShowcase from "@/components/ProjectShowcase";
 import HeroSignal from "@/components/HeroSignal";
 import Playground from "@/components/Playground";
+import { ConsoleButton } from "@/components/PortfolioConsole";
 
 const stack = [
   { title: "Frontend", icon: FaLayerGroup, tools: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Flutter"] },
@@ -25,6 +26,10 @@ export default function Home() {
             <div className="hero-actions">
               <a className="button button-primary" href="#work" data-magnetic><span>See what I’ve built</span></a>
               <a className="button" href="#contact" data-magnetic><span>Get in touch</span></a>
+            </div>
+            <div className="os-entry" aria-label="Portfolio tools">
+              <ConsoleButton screen={{ view: "dashboard" }}>Access Dashboard</ConsoleButton>
+              <ConsoleButton screen={{ view: "recruiter" }}>Recruiter Mode</ConsoleButton>
             </div>
           </div>
           <HeroSignal />

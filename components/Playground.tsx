@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
+import OsExperiments from "./OsExperiments";
 import type { KeyboardEvent, PointerEvent } from "react";
 
 type Point = { x: number; y: number };
@@ -128,6 +129,10 @@ export default function Playground() {
         <h2 id="playground-title">The Playground<span>.</span></h2>
       </div>
       <div className="experiment-grid"><SpringBench /><InterfaceBench /></div>
+      <details className="os-lab">
+        <summary>Open the debugging lab</summary>
+        <OsExperiments />
+      </details>
     </section>
   );
 }

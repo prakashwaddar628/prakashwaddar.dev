@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react";
 import { projects } from "./projects";
 import ProjectPreview from "./ProjectPreview";
+import { ConsoleButton } from "./PortfolioConsole";
+import { architecture } from "./os-data";
 
 const diagrams: Record<string, React.ReactNode> = {
   vehicle: <><rect x="19" y="21" width="282" height="138" rx="8" opacity=".48"/><path d="M19 43h282M35 32h19m212 0h18" opacity=".6"/><g transform="translate(0 15)"><path d="M49 104h222l-13-28-30-9-38-32h-63L84 70l-27 7zM108 68l29-23h48l27 23zM62 104v14h21m38 0h77m37 0h25v-14"/><circle cx="102" cy="113" r="18"/><circle cx="217" cy="113" r="18"/><path d="M41 131h110m75 0h49"/></g></>,
@@ -38,6 +40,7 @@ export default function ProjectShowcase() {
               </ul>
               <ProjectPreview art={project.art} />
               {(project.source || project.demo) && <div className="project-links">
+                {project.source && architecture[project.art] && <ConsoleButton screen={{ view: "dossier", project: project.art }}>Open Dossier</ConsoleButton>}
                 {project.source && <a href={project.source} aria-label={`${project.name} on GitHub`}>GitHub</a>}
                 {project.demo && <a href={project.demo} aria-label={`${project.name} live demo`}>Live demo</a>}
               </div>}
