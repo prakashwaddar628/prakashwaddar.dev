@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { usePathname, useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -118,7 +118,7 @@ export default function PortfolioConsole({ children }: { children: ReactNode }) 
     { label: "Recruiter Mode", detail: "Professional overview and contact", run: () => open({ view: "recruiter" }) },
     { label: "Access Dashboard", detail: "Local visitor diagnostics", run: () => open({ view: "dashboard" }) },
     { label: "Developer Terminal", detail: "Run portfolio commands", run: () => open({ view: "terminal" }) },
-    ...[["Work", "/#work"], ["About", "/#about"], ["Playground", "/#playground"], ["Writing", "/writing"], ["Engineering Logs", "/logs"], ["Contact", "/#contact"]].map(([label, href]) => (
+    ...[["Work", "/#work"], ["About", "/#about"], ["Playground", "/#playground"], ["System Lab", "/system-lab"], ["Writing", "/writing"], ["Engineering Logs", "/logs"], ["Contact", "/#contact"]].map(([label, href]) => (
       { label, detail: href, run: () => navigate(href) }
     )),
   ];

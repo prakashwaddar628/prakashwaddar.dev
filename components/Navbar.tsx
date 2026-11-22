@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,6 +9,7 @@ const links = [
   ["/#work", "Work"],
   ["/#about", "About"],
   ["/#playground", "Playground"],
+  ["/system-lab", "System Lab"],
   ["/writing", "Writing"],
   ["/logs", "Logs"],
   ["/#contact", "Contact"],

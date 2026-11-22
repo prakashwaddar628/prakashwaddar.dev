@@ -221,13 +221,15 @@ body { margin: 0; background: var(--bg); color: var(--text); font-family: system
   .hero-instrument { position: static; margin-top: 1.45rem; }
   .hero-art { top: 40%; right: -7%; opacity: .45; }
 }
-@media (max-width: 760px) {
+@media (max-width: 860px) {
   .site-nav { min-height: 4rem; }
   .menu-toggle { display: inline-flex; align-items: center; gap: .6rem; }
   .menu-toggle span { color: var(--lime); }
   .nav-links { position: absolute; inset: 100% 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .2rem .75rem; padding: .75rem 4.5%; visibility: hidden; opacity: 0; transform: translateY(-.4rem); background: var(--bg); border-bottom: 1px solid var(--line); transition: opacity .2s, transform .2s, visibility .2s; }
   .nav-links[data-open="true"] { visibility: visible; opacity: 1; transform: translateY(0); }
   .nav-links a { min-height: 2.75rem; font-size: .9rem; }
+}
+@media (max-width: 760px) {
   .hero-inner { padding-block: 4.2rem; }
   .hero-art { width: min(82vw, 30rem); right: -19%; top: 38%; opacity: .32; }
   .experiment-grid { grid-template-columns: minmax(0, 1fr); }

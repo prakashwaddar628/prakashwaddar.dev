@@ -31,6 +31,8 @@ export default function sitemap() {
     { url: baseUrl, lastModified: new Date() },
     { url: `${baseUrl}/writing`, lastModified: new Date() },
     { url: `${baseUrl}/logs`, lastModified: new Date() },
+    { url: `${baseUrl}/system-lab` },
+    { url: `${baseUrl}/system-lab/load-balancing` },
     ...writingPages,
     ...logPages,
   ]
